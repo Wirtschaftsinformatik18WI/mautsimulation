@@ -58,7 +58,7 @@ public class App {
 		simulationszeit.setMonth(11);
 		simulationszeit.setYear(2020);
 		//Geschwindigkeit der Simulationszeit festlegen
-		simulationszeit.setTimeSpeed(timeSpeedMultiplikator);
+		//simulationszeit.setTimeSpeed(timeSpeedMultiplikator);
 		
 		System.out.println("Startzeit: " + simulationszeit.getSimulTime());
 		System.out.println("Startdatum: " + simulationszeit.getSimulDate());

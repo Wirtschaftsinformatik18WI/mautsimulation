@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="controller.Simulationszeit"%>
+<%@page import="java.util.Timer"%>
 <html>
     <head>
         <link rel="stylesheet" href="styles/styleMautsimulator.css" type="text/css">
@@ -20,7 +22,7 @@
             <section>    
            		
            		<form action="startServlet">
-           	 		<div>
+           	 		<div class="navigation">
 	           	 		Testfall
 	           	 		<select class="dropdownTestfälle" name="Testfälle" >
 	                        <option value="1">Auto auf der Strecke verschollen</option>
@@ -40,14 +42,32 @@
 	                        <option value="8">8-fach</option>
 	                        <option value="16">16-fach</option> 
 	                    </select>
+	                    
+	                    
 	                 
-	                 	<input type="submit" value="Start" name="Starten" />                 
+	                 	<input class ="button" type="submit" value="Start" name="Starten" />                 
                  	</div>                          
           	 	</form>
           	 	
           	 	
-          	 	<div class = "ausgabe">
+          	 	Gesendete Standortdaten:
           	 	
+          	 	
+          	 	<div class = "ausgabe">
+          	 	<table border="1" >
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Durchfahrt/Abfahrt</th>
+                                <th>Kennzeichen</th>
+                                <th>Datum</th>
+                                <th>Zeit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                        </tbody>
+                    </table>
           	 	
           	 	</div>
           
