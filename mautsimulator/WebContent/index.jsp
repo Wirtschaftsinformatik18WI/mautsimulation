@@ -3,7 +3,7 @@
     <head>
         <link rel="stylesheet" href="styles/styleMautsimulator.css" type="text/css">
         <title>
-            Home
+            Startseite
         </title>
         <meta charset ="utf-8">
     </head>
@@ -19,7 +19,7 @@
 
             <section>
                 
-           		<p><a href="simulation.jsp">Zur Simulation</a></p><br>
+           		<p><a href="simulationsKonfig.jsp">Zur Simulation</a></p><br>
            
             </section>
 

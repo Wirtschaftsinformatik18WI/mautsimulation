@@ -56,22 +56,22 @@ public class Simulationszeit extends TimerTask {
 		return timeSpeed;
 	}
 	
-	public void setTimeSpeed(int timeSpeedMultiplikator) {
-		switch(timeSpeedMultiplikator) {
+	public void setTimeSpeed(String i) {
+		switch(i) {
 		
-			case 2 : {
+			case "2" : {
 				timeSpeed = 500;
 				break;
 			}
-			case 4 : {
+			case "4" : {
 				timeSpeed = 250;
 				break;
 			}
-			case 8 : {
+			case "8" : {
 				timeSpeed = 125;
 				break;
 			}
-			case 16 : {
+			case "16" : {
 				timeSpeed = 63;
 				break;
 			}

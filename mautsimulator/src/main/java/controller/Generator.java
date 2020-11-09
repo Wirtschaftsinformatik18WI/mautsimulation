@@ -19,6 +19,7 @@ public class Generator {
 		
 		ArrayList<Vehicle> vehicleList = new ArrayList<Vehicle>();
 		
+		
 		Vehicle vehicle1 = new Vehicle(Origin.D, "DD-KM-500");
 		vehicleList.add(vehicle1);
 			
@@ -52,14 +53,15 @@ public class Generator {
 
 	
 	//get Vehicle from Database
-	public ArrayList getVehicleFromDB() {
+	public ArrayList<Vehicle> getVehicleFromDB() {
 		
 		//List for Vehicle from ArrayList
 		ArrayList<Vehicle> vehicleList = new ArrayList<>();
 		
 		//Data from Database Connection
-		Vehicle vehicle = new Vehicle(Origin.D, "KL-DL-200");
-		vehicleList.add(vehicle);
+		vehicleList = Database.getAllVehicle();
+		//Vehicle vehicle = new Vehicle(Origin.D, "KL-DL-200");
+		//vehicleList.add(vehicle);
 		
 		return vehicleList;
 				

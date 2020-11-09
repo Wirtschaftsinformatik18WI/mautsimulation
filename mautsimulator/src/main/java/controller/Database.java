@@ -2,18 +2,33 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
-
-import javax.swing.text.Position;
+import java.sql.Statement;
+import java.util.ArrayList;
+import model.Origin;
+import model.Vehicle;
 
 public class Database {
 	
-	Connection conn = null; 
+	public static Connection getConnectiontoMotorwayToll() throws SQLException {
 
-	public void DatabaseConnection () {
-		try {
+	    Connection conn = null;
+	    try {
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://ssabautzen3.ba-bautzen.de:5433/MotorwayToll","postgres", "postgres");
+			conn.setAutoCommit(true);
+		} 
+		catch ( Exception e ) {
+			System.err.println( e.toString() );
+		}
+	    return conn;
+	}
+
+	public static Connection getConnectiontoSimulator() throws SQLException {
+
+	    Connection conn = null;
+	    try {
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://ssabautzen3.ba-bautzen.de:5433/Simulator","postgres", "postgres");
 			conn.setAutoCommit(true);
@@ -21,8 +36,12 @@ public class Database {
 		catch ( Exception e ) {
 			System.err.println( e.toString() );
 		}
+	    return conn;
 	}
+	
+	
 	protected void finalize() {
+		Connection conn = null;
 		if (conn != null) {
 			try {
 				conn.close();
@@ -31,31 +50,24 @@ public class Database {
 			}
 		}
 	}
-	/*
-	public boolean addFeeTest(String feename, UUID feeid, double d) {
-		if (conn == null) {
-			return false;
-		}
+	
+	public static ArrayList<Vehicle> getAllVehicle() {
+		ArrayList<Vehicle> allvehicle  = new ArrayList<>();
 		try {
-			String queryString = "INSERT INTO  Public.\"Fees\" (name,id,amount)" +
-					" VALUES (?, ?, ?)";
-			System.out.println(queryString);
-
-			PreparedStatement prepStmt = conn.prepareStatement(queryString);
-			prepStmt.setString (1, feename);
-			prepStmt.setString (2, feeid.toString());
-			prepStmt.setDouble(3, 0.5);
-
-			prepStmt.execute();
-			prepStmt.close();
-
-			System.out.println("Entry created successfully");
-			return true;
+			Connection conn = getConnectiontoMotorwayToll();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery( "SELECT cid, regNumber  FROM Public.\"Vehicle\"" );
+			while ( rs.next() ) {
+				
+				Vehicle vehicle = new Vehicle(Origin.valueOf(rs.getString("cid")), rs.getString("regNumber"));
+				allvehicle.add(vehicle);
+			}
+			rs.close();
+			stmt.close();
 		} 
-		catch ( Exception e ) {
-			System.err.println( e.toString() );
-			return false;
+		catch (SQLException e) {
+			System.err.println(e.toString());
 		}
+		return allvehicle;
 	}
-	*/
 }

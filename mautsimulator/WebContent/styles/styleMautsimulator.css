@@ -1,0 +1,45 @@
+@charset "ISO-8859-1";
+
+#wrapper {
+    width: 900px;;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 16px;
+    font-family: arial, sans-serif;
+}
+header {
+    padding: 15px;
+    background-color: gray;
+    margin-bottom: 15px;
+    height:60px;
+}
+section {
+    width: auto;
+    height: auto;
+    padding: 10px;
+    background-color: #F2F2F2;
+    margin-bottom: 10px;
+}
+
+.home {
+	padding: 10px;
+}
+
+
+.dropdownTestfälle {
+	margin-right: 15px;
+}
+.dropdownGeschwindigkeit {
+	margin-right: 15px;
+}
+
+
+.ausgabe {
+	margin-top: 15px;
+	height: 100px;
+	background-color: white;
+}
+
+
+
+
