@@ -1,90 +1,187 @@
 package controller;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-import model.Origin;
 import model.TransmitterData;
-import model.User;
 import model.Vehicle;
 
 import model.*;
 
 public class Generator {
-	
+
 	Random random = new Random();
-	
-	public ArrayList<Vehicle> generateVehicle() {
-		
-		ArrayList<Vehicle> vehicleList = new ArrayList<Vehicle>();
-		
-		
-		Vehicle vehicle1 = new Vehicle(Origin.D, "DD-KM-500");
-		vehicleList.add(vehicle1);
-			
-		Vehicle vehicle2 = new Vehicle(Origin.D, "GR-KN-450");
-		vehicleList.add(vehicle2);
-			
-		Vehicle vehicle3 = new Vehicle(Origin.D, "B-LK-560");
-		vehicleList.add(vehicle3);
-				
-		return vehicleList;
-	}
-	
-	public TransmitterData generateTransmitterData() {
-		
-		
-		//random location value
-		int pick = random.nextInt(Location.values().length);
-		Location location = Location.values()[pick];
-		
-		//Origin
-		int pick2 = random.nextInt(Origin.values().length);
-		Origin origin = Origin.values()[pick2];
-		
-		
-		
-		TransmitterData t = new TransmitterData(location, "KM-BZ-200", origin, "20.03.2020", "13:4:20", TransmitterTyp.Durchfahrt);
-		
-		
-		return t;
+
+	public Simulationszeit simulationszeit = new Simulationszeit();
+	public ArrayList<Vehicle> vehicleList;
+	public ArrayList<Transits> transitList;
+	public ArrayList<TransmitterData> transmitterList = new ArrayList<TransmitterData>();
+
+	public ArrayList<TransmitterData> startGeneration() {
+
+		final Database db = new Database();
+		db.DatabaseConnection();
+
+		Timer simulTimer = new Timer();
+		simulationszeit.setHour(13);
+		simulationszeit.setMinute(00);
+		simulationszeit.setSecond(00);
+		simulationszeit.setDay(1);
+		simulationszeit.setMonth(1);
+		simulationszeit.setYear(2020);
+		simulationszeit.setSimulTime(
+				simulationszeit.getHour() + ":" + simulationszeit.getMinute() + ":" + simulationszeit.getSecond());
+		simulationszeit.setSimulDate(
+				simulationszeit.getDay() + "." + simulationszeit.getMonth() + "." + simulationszeit.getYear());
+		System.out.print(simulationszeit.getSimulTime());
+		System.out.println("");
+		simulTimer.schedule(simulationszeit, 0, 1);
+
+		vehicleList = db.getrandomVehicles(6);
+		transitList = db.getTransits();
+
+		Timer genTimer = new Timer();
+		genTimer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				LocalDateTime time2 = LocalDateTime.of(simulationszeit.getYear(), simulationszeit.getMonth(), simulationszeit.getDay(), simulationszeit.getHour(), simulationszeit.getMinute(),
+						simulationszeit.getSecond());
+				for (Vehicle vehicle : vehicleList) {
+
+					if (vehicle.getActuallPos() == null) {
+						System.out.println("First Pass");
+						Transits transit = transitList.get(random.nextInt(transitList.size()));
+						vehicle.setActuallPos(transit.getPointA());
+
+						TransmitterData t = new TransmitterData(transit.getPointA(), vehicle.getRegistrationNumber(),
+								vehicle.getOrigin(), simulationszeit.getSimulDate() , simulationszeit.getSimulTime());
+						transmitterList.add(t);
+
+						String pointB = transit.getPointB();
+						vehicle.setActuallPos(pointB);
+
+						int driveTime = (int) Math.floor(transit.getKm() / (120 / 3.6) * 1000 / 60);
+
+//						time = LocalTime.of(simulationszeit.getHour(), simulationszeit.getMinute(),
+//								simulationszeit.getSecond());
+						LocalDateTime timeV = time2;
+						vehicle.setEstimatedArrival2(timeV.plusMinutes(driveTime));
+						System.out.println(vehicle.getEstimatedArrival2());
+						
+					} else {
+						// check if vehicle passed too many points
+						if (vehicle.getPassedPoints() > 3 && vehicle.getActuallPos().startsWith("D")) {
+							// -----------
+							ArrayList<Transits> fahrten = new ArrayList<Transits>();
+
+							for (Transits t : transitList) {
+								if (t.getPointA().equals(vehicle.getLastPos())) {
+									if (t.getPointB().startsWith("A")) {
+										fahrten.add(t);
+									}
+								}
+							}
+							if (fahrten.isEmpty()) {
+								vehicle.setActuallPos("A-XX");
+								break;
+							}
+							Transits newTrans = fahrten.get(random.nextInt(1));
+							// ---------
+							vehicle.setActuallPos(newTrans.getPointB());
+							break;
+						}
+
+						// Check if time is ready for Vehicle to Arrive
+						if (time2.isAfter(vehicle.getEstimatedArrival2())) {
+							String point = vehicle.getActuallPos();
+							TransmitterData t = new TransmitterData(point, vehicle.getRegistrationNumber(),
+									vehicle.getOrigin(), simulationszeit.getSimulDate() , simulationszeit.getSimulTime());
+							transmitterList.add(t);
+
+							// Check if next point is "Abfahrt"
+							if (vehicle.getActuallPos().startsWith("A")) {
+								vehicleList.remove(vehicle);
+								break;
+							}
+							// ------------
+							ArrayList<Transits> fahrten = new ArrayList<Transits>();
+
+							for (Transits tran : transitList) {
+								if (tran.getPointA().equals(vehicle.getActuallPos())) {
+									fahrten.add(tran);
+								}
+							}
+							if (fahrten.isEmpty()) {
+								vehicle.setActuallPos("A-XY");
+								break;
+							}
+
+							Transits newTrans = fahrten.get(random.nextInt(1));
+							// ----------
+							vehicle.setLastPos(newTrans.getPointA());
+							vehicle.setActuallPos(newTrans.getPointB());
+
+							int driveTime = (int) Math.floor(newTrans.getKm() / (120 / 3.6) * 1000 / 60);
+
+//							time = LocalTime.of(simulationszeit.getHour(), simulationszeit.getMinute(),
+//									simulationszeit.getSecond());
+							LocalDateTime timeV = time2;
+							vehicle.setEstimatedArrival2(timeV.plusMinutes(driveTime));
+//							vehicle.setEstimatedArrival(time.plusMinutes(driveTime));
+
+						}
+					}
+				}
+				if (vehicleList.isEmpty()) {
+					cancel();
+					simulationszeit.cancel();
+					simulTimer.cancel();
+					genTimer.cancel();
+				}
+			}
+		}, 0, 1);
+		return transmitterList;
 	}
 
-	
-	//get Vehicle from Database
-	public ArrayList<Vehicle> getVehicleFromDB() {
-		
-		//List for Vehicle from ArrayList
-		ArrayList<Vehicle> vehicleList = new ArrayList<>();
-		
-		//Data from Database Connection
-		vehicleList = Database.getAllVehicle();
-		//Vehicle vehicle = new Vehicle(Origin.D, "KL-DL-200");
-		//vehicleList.add(vehicle);
-		
-		return vehicleList;
-				
+	public void waitForGenerationAndSave() {
+		Generator gen = new Generator();
+		Database db = new Database();
+		db.DatabaseConnection();
+
+		ArrayList<TransmitterData> transmitterData23 = new ArrayList<>();
+
+		CompletableFuture<ArrayList<TransmitterData>> future = CompletableFuture.supplyAsync(() -> {
+			ArrayList<TransmitterData> transmitterData = new ArrayList<>();
+			transmitterData = gen.startGeneration();
+			return transmitterData;
+
+		});
+
+		try {
+			Thread.sleep(1000 * 60 * 1);
+			transmitterData23.addAll(future.get());
+		} catch (InterruptedException e) {
+			// TODO Automatisch generierter Erfassungsblock
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Automatisch generierter Erfassungsblock
+			e.printStackTrace();
+		}
+
+		for (TransmitterData t : transmitterData23) {
+			System.out.println(
+					t.getDate() + " >> " + t.getTime() + " >> " + t.getPoint() + " >> " + t.getRegistrationNumber());
+		}
+		db.insertTransit(transmitterData23, 4);
+
 	}
-	
-	public void startGeneration() {
-		//get vehicle from db -- getVehicleFromDB()
-		
-		//start timer 
-		
-		//Aller 30 sek. startet ein Auto
-		/* vehicle.setActualPosition
-		 * 	Zusätzliche Vehicle Attribute? -> estimated arrival | used stop (exampel: stop after 5 durchfahrten)
-		 * jede Sekunde ganze ArrayList checken? nach: estimatet arrival etc.
-		 * 
-		 * 
-		 * */
-		
-		/* ODER: Generiere alle 30 sekunden ein neues Vehicle und Füge es der Liste Hinzu, 
-		 * Vehicle mit last postition == Abfahrt werden aus der Liste entfernt
-		 * 
-		 * 
-		 * */
-	}
-		
+
 }

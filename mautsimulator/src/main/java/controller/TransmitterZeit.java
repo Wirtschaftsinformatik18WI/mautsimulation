@@ -18,8 +18,8 @@ public class TransmitterZeit extends TimerTask{
 		data.setTime(simulationszeit.getSimulTime());
 		
 		//KFZ Daten
-		data.setRegistrationNumber(gen.generateVehicle().get(0).getRegistrationNumber());
-		data.setOrigin(gen.generateVehicle().get(0).getOrigin());
+//		data.setRegistrationNumber(gen.generateVehicle().get(0).getRegistrationNumber());
+//		data.setOrigin(gen.generateVehicle().get(0).getOrigin());
 		
 		//Peilsenderdaten
 		//data.setLocation(location);

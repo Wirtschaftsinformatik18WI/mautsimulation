@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Vehicle {
@@ -7,8 +9,11 @@ public class Vehicle {
 	private Origin origin;
     private String registrationNumber = new String();
     private ArrayList<String> transitList = new ArrayList<>();
-    private String lastPos;
     private String actuallPos;
+    private String lastPos;
+    private LocalTime estimatedArrival;
+    private LocalDateTime estimatedArrival2;
+    private int passedPoints;
     
     public Vehicle (Origin origin, String registrationNumber) {
         this.origin = origin;
@@ -39,6 +44,26 @@ public class Vehicle {
 		this.transitList = transitList;
 	}
 
+	public String getActuallPos() {
+		return actuallPos;
+	}
+
+	public void setActuallPos(String acuallPos) {
+		this.actuallPos = acuallPos;
+		this.passedPoints++;
+	}
+
+	public LocalTime getEstimatedArrival() {
+		return estimatedArrival;
+	}
+
+	public void setEstimatedArrival(LocalTime estimatedArrival) {
+		this.estimatedArrival = estimatedArrival;
+	}
+	public int getPassedPoints() {
+		return passedPoints;
+	}
+
 	public String getLastPos() {
 		return lastPos;
 	}
@@ -47,12 +72,12 @@ public class Vehicle {
 		this.lastPos = lastPos;
 	}
 
-	public String getAcuallPos() {
-		return actuallPos;
+	public LocalDateTime getEstimatedArrival2() {
+		return estimatedArrival2;
 	}
 
-	public void setAcuallPos(String acuallPos) {
-		this.actuallPos = acuallPos;
+	public void setEstimatedArrival2(LocalDateTime estimatedArrival2) {
+		this.estimatedArrival2 = estimatedArrival2;
 	}
-
+	
 }

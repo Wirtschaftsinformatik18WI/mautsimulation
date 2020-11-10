@@ -78,10 +78,16 @@ public class Simulationszeit extends TimerTask {
 		}
 	}
 
-
+	public String checkTime(int i) {
+		if(i < 10) {
+			return "0"+i;
+		}
+		return Integer.toString(i);
+	}
 
 	public void addSec() {
 		second = getSecond() + 1;	
+		
 	}
 	public void addMin() {
 		minute = getMinute() + 1;	
@@ -104,15 +110,21 @@ public class Simulationszeit extends TimerTask {
 	
 	
 	public String getSimulTime() {
-		simulTime = getHour() + ":" + getMinute() + ":" + getSecond();
+		simulTime = checkTime(getHour()) + ":" + checkTime(getMinute()) + ":" + checkTime(getSecond());
 		return simulTime;
 	}
 	public String getSimulDate() {
-		simulDate = getDay() + "." + getMonth() + "." + getYear();
+		simulDate = checkTime(getDay()) + "." + checkTime(getMonth()) + "." + checkTime(getYear());
 		return simulDate;
 	}
 	
+	public void setSimulTime(String simulTime) {
+		this.simulTime = simulTime;
+	}
 	
+	public void setSimulDate(String simulDate){
+		this.simulDate = simulDate;
+	}
 	
 	
 	public int getDay() {
