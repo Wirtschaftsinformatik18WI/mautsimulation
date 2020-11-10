@@ -82,7 +82,7 @@ public class App {
 		
 		Generator gen = new Generator();
 		
-		gen.waitForGenerationAndSave();
+		gen.waitForGenerationAndSave(2020, 2, 1, 8, 0, 0, 5, 6);
 		
 		
 		

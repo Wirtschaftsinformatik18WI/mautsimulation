@@ -23,18 +23,19 @@ public class Generator {
 	public ArrayList<Transits> transitList;
 	public ArrayList<TransmitterData> transmitterList = new ArrayList<TransmitterData>();
 
-	public ArrayList<TransmitterData> startGeneration() {
+	public ArrayList<TransmitterData> startGeneration(int year, int month, int day, int hour, int minute, int second, int cars) {
 
 		final Database db = new Database();
 		db.DatabaseConnection();
 
 		Timer simulTimer = new Timer();
-		simulationszeit.setHour(13);
-		simulationszeit.setMinute(00);
-		simulationszeit.setSecond(00);
-		simulationszeit.setDay(1);
-		simulationszeit.setMonth(1);
-		simulationszeit.setYear(2020);
+		simulationszeit.setYear(year);
+		simulationszeit.setMonth(month);
+		simulationszeit.setDay(day);
+		simulationszeit.setHour(hour);
+		simulationszeit.setMinute(minute);
+		simulationszeit.setSecond(second);
+
 		simulationszeit.setSimulTime(
 				simulationszeit.getHour() + ":" + simulationszeit.getMinute() + ":" + simulationszeit.getSecond());
 		simulationszeit.setSimulDate(
@@ -43,7 +44,7 @@ public class Generator {
 		System.out.println("");
 		simulTimer.schedule(simulationszeit, 0, 1);
 
-		vehicleList = db.getrandomVehicles(6);
+		vehicleList = db.getrandomVehicles(cars);
 		transitList = db.getTransits();
 
 		Timer genTimer = new Timer();
@@ -74,7 +75,12 @@ public class Generator {
 //								simulationszeit.getSecond());
 						LocalDateTime timeV = time2;
 						vehicle.setEstimatedArrival2(timeV.plusMinutes(driveTime));
-						System.out.println(vehicle.getEstimatedArrival2());
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							// TODO Automatisch generierter Erfassungsblock
+							e.printStackTrace();
+						}
 						
 					} else {
 						// check if vehicle passed too many points
@@ -151,7 +157,7 @@ public class Generator {
 		return transmitterList;
 	}
 
-	public void waitForGenerationAndSave() {
+	public void waitForGenerationAndSave(int year, int month, int day, int hour, int minute, int second, int testcase, int cars) {
 		Generator gen = new Generator();
 		Database db = new Database();
 		db.DatabaseConnection();
@@ -160,13 +166,13 @@ public class Generator {
 
 		CompletableFuture<ArrayList<TransmitterData>> future = CompletableFuture.supplyAsync(() -> {
 			ArrayList<TransmitterData> transmitterData = new ArrayList<>();
-			transmitterData = gen.startGeneration();
+			transmitterData = gen.startGeneration(year, month, day, hour, minute, second, cars);
 			return transmitterData;
 
 		});
 
 		try {
-			Thread.sleep(1000 * 60 * 1);
+			Thread.sleep(1000 * 60 * 2);
 			transmitterData23.addAll(future.get());
 		} catch (InterruptedException e) {
 			// TODO Automatisch generierter Erfassungsblock
@@ -180,7 +186,7 @@ public class Generator {
 			System.out.println(
 					t.getDate() + " >> " + t.getTime() + " >> " + t.getPoint() + " >> " + t.getRegistrationNumber());
 		}
-		db.insertTransit(transmitterData23, 4);
+		db.insertTransit(transmitterData23, testcase);
 
 	}
 
