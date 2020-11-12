@@ -65,6 +65,7 @@ public class Database {
 		return conn;
 	}
 
+	//gets all Produktive vehicle Data from MotorwayToll
 	public ArrayList<Vehicle> getAllVehicle() {
 		ArrayList<Vehicle> allvehicle = new ArrayList<>();
 		try {
@@ -84,6 +85,7 @@ public class Database {
 		return allvehicle;
 	}
 
+	//inserts vehicle from motowayToll to simulator
 	public void setAllVehicle(ArrayList<Vehicle> vehicleList) {
 		for (Vehicle v : vehicleList) {
 			if (VehicleInList(v)) {
@@ -105,6 +107,7 @@ public class Database {
 		}
 	}
 
+	//checks if already exsits in Simulator DB
 	public boolean VehicleInList(Vehicle v) {
 
 		Statement stmt;
@@ -125,6 +128,7 @@ public class Database {
 		return true;
 	}
 
+	//get random Vehicles from Simulator DB
 	public ArrayList<Vehicle> getrandomVehicles(int i) {
 		ArrayList<Vehicle> vehicleList = new ArrayList<Vehicle>();
 
@@ -151,6 +155,7 @@ public class Database {
 		return vehicleList;
 	}
 
+	//every possible Transit from Database
 	public ArrayList<Transits> getTransits() {
 		Statement stmt;
 		ArrayList<Transits> transits = new ArrayList<Transits>();
@@ -174,7 +179,8 @@ public class Database {
 		return transits;
 	}
 
-	public void insertTransmitterData(ArrayList<TransmitterData> transmitterData, int test) {
+	//write generated TransmitterData into Simulator Database for further manipulaiton
+	public void insertTransmitterDataSimulator(ArrayList<TransmitterData> transmitterData, int test) {
 
 		for (TransmitterData t : transmitterData) {
 			try {
@@ -199,6 +205,7 @@ public class Database {
 
 	}
 	
+	//workaround for WebAPI. Writes test Data into produktive System
 	public void insertTransmitterDataMotorwayToll(ArrayList<TransmitterData> transmitterData) {
 		
 		for (TransmitterData t : transmitterData) {
@@ -221,8 +228,8 @@ public class Database {
 			}
 		}
 	}
-	
-	public ArrayList<TransmitterData> getTransmitterData(int test) {
+	//getting TransmitterData for given testcase from Database
+	public ArrayList<TransmitterData> getTransmitterDataSimulator(int test) {
 		
 		ArrayList<TransmitterData> tList = new ArrayList<TransmitterData>();
 		

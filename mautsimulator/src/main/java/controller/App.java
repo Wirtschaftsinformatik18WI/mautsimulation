@@ -84,12 +84,12 @@ public class App {
 //		ArrayList<Vehicle> vList = db.getAllVehicle();
 //		db.setAllVehicle(vList);
 //		
-//		Generator gen = new Generator();
+		Generator gen = new Generator();
 //		
-//		gen.waitForGenerationAndSave(2020, 2, 1, 8, 0, 0, 6, 6);
+		gen.waitForGenerationAndSave(2020, 11, 14, 9, 12, 30, 3, 5);
 		
-		ArrayList<TransmitterData> tList = db.getTransmitterData(5);
-		db.insertTransmitterDataMotorwayToll(tList);
+//		ArrayList<TransmitterData> tList = db.getTransmitterDataSimulator(5);
+//		db.insertTransmitterDataMotorwayToll(tList);
 		
 		
 		

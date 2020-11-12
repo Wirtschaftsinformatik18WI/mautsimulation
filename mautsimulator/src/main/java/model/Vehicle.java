@@ -8,11 +8,9 @@ public class Vehicle {
 	
 	private Origin origin;
     private String registrationNumber = new String();
-    private ArrayList<String> transitList = new ArrayList<>();
     private String actuallPos;
     private String lastPos;
-    private LocalTime estimatedArrival;
-    private LocalDateTime estimatedArrival2;
+    private LocalDateTime estimatedArrival;
     private int passedPoints;
     
     public Vehicle (Origin origin, String registrationNumber) {
@@ -36,14 +34,6 @@ public class Vehicle {
 		this.registrationNumber = registrationNumber;
 	}
 
-	public ArrayList<String> getTransitList() {
-		return transitList;
-	}
-
-	public void setTransitList(ArrayList<String> transitList) {
-		this.transitList = transitList;
-	}
-
 	public String getActuallPos() {
 		return actuallPos;
 	}
@@ -53,13 +43,6 @@ public class Vehicle {
 		this.passedPoints++;
 	}
 
-	public LocalTime getEstimatedArrival() {
-		return estimatedArrival;
-	}
-
-	public void setEstimatedArrival(LocalTime estimatedArrival) {
-		this.estimatedArrival = estimatedArrival;
-	}
 	public int getPassedPoints() {
 		return passedPoints;
 	}
@@ -72,12 +55,12 @@ public class Vehicle {
 		this.lastPos = lastPos;
 	}
 
-	public LocalDateTime getEstimatedArrival2() {
-		return estimatedArrival2;
+	public LocalDateTime getEstimatedArrival() {
+		return estimatedArrival;
 	}
 
-	public void setEstimatedArrival2(LocalDateTime estimatedArrival2) {
-		this.estimatedArrival2 = estimatedArrival2;
+	public void setEstimatedArrival(LocalDateTime estimatedArrival) {
+		this.estimatedArrival = estimatedArrival;
 	}
 	
 }
