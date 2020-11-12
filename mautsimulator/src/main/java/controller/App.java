@@ -80,9 +80,16 @@ public class App {
 		System.out.println("Abfrage der Transmitterdaten startet!");
 		transmitterTimer.schedule(transmitterZeit, 2000, 4000);*/
 		
-		Generator gen = new Generator();
+		Database db = new Database();
+//		ArrayList<Vehicle> vList = db.getAllVehicle();
+//		db.setAllVehicle(vList);
+//		
+//		Generator gen = new Generator();
+//		
+//		gen.waitForGenerationAndSave(2020, 2, 1, 8, 0, 0, 6, 6);
 		
-		gen.waitForGenerationAndSave(2020, 2, 1, 8, 0, 0, 5, 6);
+		ArrayList<TransmitterData> tList = db.getTransmitterData(5);
+		db.insertTransmitterDataMotorwayToll(tList);
 		
 		
 		

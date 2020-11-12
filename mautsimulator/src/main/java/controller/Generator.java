@@ -186,7 +186,7 @@ public class Generator {
 			System.out.println(
 					t.getDate() + " >> " + t.getTime() + " >> " + t.getPoint() + " >> " + t.getRegistrationNumber());
 		}
-		db.insertTransit(transmitterData23, testcase);
+		db.insertTransmitterData(transmitterData23, testcase);
 
 	}
 

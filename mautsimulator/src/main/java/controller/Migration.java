@@ -83,6 +83,7 @@ public class Migration {
 		} 
 		catch (SQLException e) {
 			System.err.println(e.toString());
+			e.printStackTrace();
 			return false;
 		}
 	}
