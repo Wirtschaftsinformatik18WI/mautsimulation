@@ -12,10 +12,19 @@ import model.Transits;
 import model.TransmitterData;
 import model.Vehicle;
 
+/**
+ * 
+ * class to: ~ create connections to MotorwayToll und Simulation Database
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ */
 public class Database {
 
 	Connection conn = null;
 
+	/**
+	 * Connection to Simulations db and sets global value Connection
+	 */
 	public void DatabaseConnection() {
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -27,6 +36,9 @@ public class Database {
 		}
 	}
 
+	/**
+	 * closes connection
+	 */
 	protected void finalize() {
 		if (conn != null) {
 			try {
@@ -37,6 +49,11 @@ public class Database {
 		}
 	}
 
+	/**
+	 * 
+	 * @return static connection to MotorwayToll db
+	 * @throws SQLException
+	 */
 	public static Connection getConnectiontoMotorwayToll() throws SQLException {
 
 		Connection conn = null;
@@ -51,6 +68,11 @@ public class Database {
 		return conn;
 	}
 
+	/**
+	 * 
+	 * @return static connection to Simulator db
+	 * @throws SQLException
+	 */
 	public static Connection getConnectiontoSimulator() throws SQLException {
 
 		Connection conn = null;
@@ -65,7 +87,10 @@ public class Database {
 		return conn;
 	}
 
-	//gets all Produktive vehicle Data from MotorwayToll
+	/**
+	 * gets all produktive vehicle Data from MotorwayToll
+	 * @return ArrayList of Vehicles from MotorwayToll
+	 */
 	public ArrayList<Vehicle> getAllVehicle() {
 		ArrayList<Vehicle> allvehicle = new ArrayList<>();
 		try {
@@ -85,20 +110,22 @@ public class Database {
 		return allvehicle;
 	}
 
-	//inserts vehicle from motowayToll to simulator
+	/**
+	 * inserts vehicle from motowayToll to simulator
+	 */ 
 	public void setAllVehicle(ArrayList<Vehicle> vehicleList) {
 		for (Vehicle v : vehicleList) {
 			if (VehicleInList(v)) {
 				try {
 					Connection conn = getConnectiontoSimulator();
-					
+
 					String query = "INSERT INTO public.\"Vehicle\" values (?, ?)";
 					PreparedStatement prepStmt = conn.prepareStatement(query);
 					prepStmt.setString(1, v.getRegistrationNumber());
 					prepStmt.setString(2, v.getOrigin().toString());
-					
+
 					prepStmt.executeQuery();
-					
+
 					prepStmt.close();
 				} catch (SQLException e) {
 					System.err.println(e.toString());
@@ -107,7 +134,11 @@ public class Database {
 		}
 	}
 
-	//checks if already exsits in Simulator DB
+	/**
+	 *  checks if already exsists in Simulator DB
+	 * @param v Vehicle object
+	 * @return
+	 */
 	public boolean VehicleInList(Vehicle v) {
 
 		Statement stmt;
@@ -128,7 +159,11 @@ public class Database {
 		return true;
 	}
 
-	//get random Vehicles from Simulator DB
+	/**
+	 *  get random Vehicles from Simulator DB
+	 * @param i testcase flag
+	 * @return
+	 */
 	public ArrayList<Vehicle> getrandomVehicles(int i) {
 		ArrayList<Vehicle> vehicleList = new ArrayList<Vehicle>();
 
@@ -155,7 +190,10 @@ public class Database {
 		return vehicleList;
 	}
 
-	//every possible Transit from Database
+	/**
+	 *  every possible Transit from Database
+	 * @return ArrayList with all possible transits
+	 */
 	public ArrayList<Transits> getTransits() {
 		Statement stmt;
 		ArrayList<Transits> transits = new ArrayList<Transits>();
@@ -179,7 +217,11 @@ public class Database {
 		return transits;
 	}
 
-	//write generated TransmitterData into Simulator Database for further manipulaiton
+	/**
+	 *  write generated TransmitterData into Simulator Database for further manipulaiton
+	 * @param transmitterData ArrayList of TransmitterData from Generator
+	 * @param test testcase
+	 */
 	public void insertTransmitterDataSimulator(ArrayList<TransmitterData> transmitterData, int test) {
 
 		for (TransmitterData t : transmitterData) {
@@ -204,10 +246,13 @@ public class Database {
 		}
 
 	}
-	
-	//workaround for WebAPI. Writes test Data into produktive System
+
+	/**
+	 * workaround for WebAPI. Writes test Data into produktive System
+	 * @param transmitterData Data of Simulator DB
+	 */
 	public void insertTransmitterDataMotorwayToll(ArrayList<TransmitterData> transmitterData) {
-		
+
 		for (TransmitterData t : transmitterData) {
 			try {
 				Connection conn = getConnectiontoMotorwayToll();
@@ -228,25 +273,31 @@ public class Database {
 			}
 		}
 	}
-	//getting TransmitterData for given testcase from Database
+
+	/**
+	 * getting TransmitterData for given Testcase from Database
+	 * @param test testcase
+	 * @return ArrayList of TransmitterData from Simulator DB
+	 */
 	public ArrayList<TransmitterData> getTransmitterDataSimulator(int test) {
-		
+
 		ArrayList<TransmitterData> tList = new ArrayList<TransmitterData>();
-		
+
 		try {
 			Connection conn = getConnectiontoSimulator();
 			String query = "Select * from public.\"TransmitterData\" WHERE \"testNr\" = ?";
-			
+
 			PreparedStatement prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, test);
-			
+
 			ResultSet rs = prepStmt.executeQuery();
-			while(rs.next()) {
-				TransmitterData t = new TransmitterData(rs.getString("point"), rs.getString("regNumber"), Origin.valueOf( rs.getString("origin")), rs.getString("date"), rs.getString("time"));
+			while (rs.next()) {
+				TransmitterData t = new TransmitterData(rs.getString("point"), rs.getString("regNumber"),
+						Origin.valueOf(rs.getString("origin")), rs.getString("date"), rs.getString("time"));
 				tList.add(t);
 			}
-			
-		} catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return tList;

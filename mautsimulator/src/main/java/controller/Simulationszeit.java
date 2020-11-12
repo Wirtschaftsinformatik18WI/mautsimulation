@@ -2,6 +2,13 @@ package controller;
 
 import java.util.TimerTask;
 
+/**
+ * 
+ * class to:
+ * 		~ creates an simulation Timer witch starts at given point an progresses at given speed
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ * */
 public class Simulationszeit extends TimerTask {
 	
 	private String simulTime;

@@ -1,7 +1,6 @@
 package controller;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -14,6 +13,13 @@ import model.Vehicle;
 
 import model.*;
 
+/**
+ * 
+ * class to:
+ * 		~ create an ArrayList with random transits for specific Vehicles
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ * */
 public class Generator {
 
 	//init as class parameter
@@ -23,10 +29,20 @@ public class Generator {
 	public ArrayList<Transits> transitList;
 	public ArrayList<TransmitterData> transmitterList = new ArrayList<TransmitterData>();
 
-	//starts 
+	/**
+	 * 
+	 * @param year 
+	 * @param month 
+	 * @param day 
+	 * @param hour 
+	 * @param minute 
+	 * @param second 
+	 * @param cars The vehicles to generate TransmitterData for
+	 * @return an ArrayList with all generated TransmitterData objects
+	 */
 	public ArrayList<TransmitterData> startGeneration(int year, int month, int day, int hour, int minute, int second, int cars) {
 		
-		//Database Connection to Simuklation
+		//Database Connection to Simulation
 		final Database db = new Database();
 		db.DatabaseConnection();
 
@@ -156,7 +172,20 @@ public class Generator {
 		}, 0, 1);
 		return transmitterList;
 	}
-	//method for saving generated Data into Database Needs CompletableFuture and Thread.sleep to wait until all Data is Generated and save it into Database
+	
+	/**
+	 * 
+	 * @param year
+	 * @param month
+	 * @param day
+	 * @param hour
+	 * @param minute
+	 * @param second
+	 * @param testcase flag for witch testcase the TransmitterData should be generated
+	 * @param cars 
+	 * 
+	 * method for saving generated Data into Database Needs CompletableFuture and Thread.sleep to wait until all Data is Generated and save it into Database
+	 */
 	public void waitForGenerationAndSave(int year, int month, int day, int hour, int minute, int second, int testcase, int cars) {
 		Generator gen = new Generator();
 		Database db = new Database();

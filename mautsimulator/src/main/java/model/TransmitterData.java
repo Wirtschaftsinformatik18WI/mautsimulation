@@ -1,6 +1,12 @@
 package model;
 
-
+/**
+ * 
+ * class to:
+ * 		~ create TransmitterData 
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ * */
 public class TransmitterData {
 	
 	private String point;

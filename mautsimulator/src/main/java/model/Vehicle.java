@@ -1,9 +1,14 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
 
+/**
+ * 
+ * class to:
+ * 		~ create Vehicle for TransmitterData
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ * */
 public class Vehicle {
 	
 	private Origin origin;
