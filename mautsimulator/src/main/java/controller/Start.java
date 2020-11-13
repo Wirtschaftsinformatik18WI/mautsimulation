@@ -2,6 +2,13 @@ package controller;
 
 import java.util.Timer;
 
+/**
+ * 
+ * class to:
+ * 		~ start Simulationszeit for Simulation
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ * */
 public class Start {
 	
 	

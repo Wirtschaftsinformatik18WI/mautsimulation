@@ -201,7 +201,7 @@ public class Generator {
 		});
 
 		try {
-			Thread.sleep(1000 * 60 * 2);
+			Thread.sleep(1000 * 60 * 1);
 			transmitterData23.addAll(future.get());
 		} catch (InterruptedException e) {
 			// TODO Automatisch generierter Erfassungsblock

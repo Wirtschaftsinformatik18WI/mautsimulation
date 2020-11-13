@@ -15,7 +15,7 @@ public class App {
 
 		Generator gen = new Generator();
 
-		gen.waitForGenerationAndSave(2020, 11, 17, 9, 12, 30, 1, 3);
+		gen.waitForGenerationAndSave(2020, 11, 30, 23, 12, 30, 6, 1);
 		
 //		ArrayList<TransmitterData> tList = db.getTransmitterDataSimulator(5);
 //		db.insertTransmitterDataMotorwayToll(tList);
