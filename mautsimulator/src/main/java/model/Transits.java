@@ -1,5 +1,12 @@
 package model;
 
+/**
+ * 
+ * class to:
+ * 		~ save Transits from Database for local handling
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ * */
 public class Transits {
 
 	private String pointA;

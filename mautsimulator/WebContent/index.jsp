@@ -59,11 +59,11 @@
           	 	<table border="1" >
                         <thead>
                             <tr>
-                                <th>Location</th>
-                                <th>Durchfahrt/Abfahrt</th>
-                                <th>Kennzeichen</th>
-                                <th>Datum</th>
-                                <th>Zeit</th>
+                                <th>Point</th>
+			                    <th>Zeit</th>
+			                    <th>Datum</th>
+		                        <th>Herkunft</th>
+	                            <th>Kennzeichen</th>
                             </tr>
                         </thead>
                         <tbody>

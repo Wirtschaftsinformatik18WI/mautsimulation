@@ -1,14 +1,22 @@
 package model;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
+/**
+ * 
+ * class to:
+ * 		~ create Vehicle for TransmitterData
+ * 
+ * @author marcel.lehmann Mail: 18wi1341@ba-bautzen.de
+ * */
 public class Vehicle {
 	
 	private Origin origin;
     private String registrationNumber = new String();
-    private ArrayList<String> transitList = new ArrayList<>();
-    private String lastPos;
     private String actuallPos;
+    private String lastPos;
+    private LocalDateTime estimatedArrival;
+    private int passedPoints;
     
     public Vehicle (Origin origin, String registrationNumber) {
         this.origin = origin;
@@ -31,12 +39,17 @@ public class Vehicle {
 		this.registrationNumber = registrationNumber;
 	}
 
-	public ArrayList<String> getTransitList() {
-		return transitList;
+	public String getActuallPos() {
+		return actuallPos;
 	}
 
-	public void setTransitList(ArrayList<String> transitList) {
-		this.transitList = transitList;
+	public void setActuallPos(String acuallPos) {
+		this.actuallPos = acuallPos;
+		this.passedPoints++;
+	}
+
+	public int getPassedPoints() {
+		return passedPoints;
 	}
 
 	public String getLastPos() {
@@ -47,12 +60,12 @@ public class Vehicle {
 		this.lastPos = lastPos;
 	}
 
-	public String getAcuallPos() {
-		return actuallPos;
+	public LocalDateTime getEstimatedArrival() {
+		return estimatedArrival;
 	}
 
-	public void setAcuallPos(String acuallPos) {
-		this.actuallPos = acuallPos;
+	public void setEstimatedArrival(LocalDateTime estimatedArrival) {
+		this.estimatedArrival = estimatedArrival;
 	}
-
+	
 }
