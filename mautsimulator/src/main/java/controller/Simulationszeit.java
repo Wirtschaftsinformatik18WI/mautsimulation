@@ -9,6 +9,8 @@ public class Simulationszeit extends TimerTask {
 	private int minute;
 	private int second;
 	private int timeSpeed;
+	private int sendSpeed;
+	
 	
 	private String simulDate;
 	private int day;
@@ -47,7 +49,7 @@ public class Simulationszeit extends TimerTask {
 		}
 		
 		//simulTime = hour + ":" + minute + ":" + second; 
-		System.out.println(getSimulTime() + " | " + getSimulDate());
+		System.out.println(getSimulTime());
 		
 	}
 	
@@ -61,27 +63,37 @@ public class Simulationszeit extends TimerTask {
 		
 			case "2" : {
 				timeSpeed = 500;
+				sendSpeed = 30000;	
 				break;
 			}
 			case "4" : {
 				timeSpeed = 250;
+				sendSpeed = 15000;
 				break;
 			}
 			case "8" : {
 				timeSpeed = 125;
+				sendSpeed = 7500;
 				break;
 			}
 			case "16" : {
 				timeSpeed = 63;
+				sendSpeed = 3750;
 				break;
 			}
 		}
 	}
 
-
+	public String checkTime(int i) {
+		if(i < 10) {
+			return "0"+i;
+		}
+		return Integer.toString(i);
+	}
 
 	public void addSec() {
 		second = getSecond() + 1;	
+		
 	}
 	public void addMin() {
 		minute = getMinute() + 1;	
@@ -104,15 +116,21 @@ public class Simulationszeit extends TimerTask {
 	
 	
 	public String getSimulTime() {
-		simulTime = getHour() + ":" + getMinute() + ":" + getSecond();
+		simulTime = checkTime(getHour()) + ":" + checkTime(getMinute()) + ":" + checkTime(getSecond());
 		return simulTime;
 	}
 	public String getSimulDate() {
-		simulDate = getDay() + "." + getMonth() + "." + getYear();
+		simulDate = checkTime(getDay()) + "." + checkTime(getMonth()) + "." + checkTime(getYear());
 		return simulDate;
 	}
 	
+	public void setSimulTime(String simulTime) {
+		this.simulTime = simulTime;
+	}
 	
+	public void setSimulDate(String simulDate){
+		this.simulDate = simulDate;
+	}
 	
 	
 	public int getDay() {
@@ -151,4 +169,10 @@ public class Simulationszeit extends TimerTask {
 	public void setSecond(int second) {
 		this.second = second;
 	}	
+	public int getSendSpeed() {
+		return sendSpeed;
+	}
+	public void setSendSpeed(int sendSpeed) {
+		this.sendSpeed = sendSpeed;
+	}
 }

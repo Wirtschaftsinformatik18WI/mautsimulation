@@ -3,32 +3,29 @@ package model;
 
 public class TransmitterData {
 	
-	private Location location;
+	private String point;
 	private String registrationNumber;
 	private Origin origin;
 	private String date;
 	private String time;
-	private TransmitterTyp typ;
 	
-	
-	public TransmitterData(Location location, String reg, Origin origin, String date, String time, TransmitterTyp typ) {
-		this.location = location;
+	public TransmitterData(String point, String reg, Origin origin, String date, String time) {
+		this.point = point;
 		this.registrationNumber = reg;
 		this.origin = origin;
 		this.date = date;
 		this.time = time;
-		this.typ = typ;
 	}
 	
 	public TransmitterData() {
 		
 	}
 	
-	public Location getLocation() {
-		return location;
+	public String getPoint() {
+		return point;
 	}
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setPoint(String point) {
+		this.point = point;
 	}
 	public String getRegistrationNumber() {
 		return registrationNumber;
@@ -53,12 +50,6 @@ public class TransmitterData {
 	}
 	public void setTime(String time) {
 		this.time = time;
-	}
-	public TransmitterTyp getTyp() {
-		return typ;
-	}
-	public void setTyp(TransmitterTyp typ) {
-		this.typ = typ;
 	}
 
 }
